@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.automationxaa.app",
+      "sha256_cert_fingerprints": ["E5:98:1A:3D:E4:EA:14:0D:67:C5:42:5B:99:8A:91:CC:31:12:00:03:43:14:EA:C6:83:22:DB:C4:D3:23:6A:4C"]
+    }
+  }
+]
