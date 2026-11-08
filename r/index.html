@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>You've been invited — Automation X AA</title>
+<meta name="description" content="You've been invited to Automation X AA. Download the app and sign up with this referral code.">
+<meta name="theme-color" content="#030604">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="You've been invited to Automation X AA">
+<meta property="og:description" content="Download the app and sign up with my referral code.">
+<meta property="og:image" content="../assets/logo.png">
+<link rel="icon" type="image/png" href="../assets/favicon.png">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div class="wrap" style="max-width:560px">
+  <div class="top"><a href="../" style="display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none"><img src="../assets/logo.webp" alt="" width="38" height="38"><b>Automation X AA</b></a></div>
+
+  <div class="card glow center" style="margin-top:26px">
+    <picture><source srcset="../assets/logo.webp" type="image/webp"><img class="logo3d" src="../assets/logo.png" alt="Automation X AA logo" width="120" height="120" style="width:128px;height:128px"></picture>
+    <h1 style="font-size:clamp(26px,7vw,38px)">You've been invited</h1>
+    <p class="muted" id="sub">Sign up in Automation X AA with this referral code.</p>
+    <div class="code" id="code">—</div>
+    <div class="note red hidden" id="bad">This invite link has no valid referral code. You can still download the app and enter a code by hand.</div>
+    <a class="btn big block" id="dl" href="../downloads/AutomationXAA-latest.apk" download style="margin-top:6px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg>Download APK</a>
+    <button class="btn ghost block" id="copy" type="button" style="margin-top:14px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>Copy code</button>
+    <div class="note hidden" id="ok"></div>
+    <div id="openWrap" class="hidden" style="margin-top:14px">
+      <a class="btn ghost block" id="open" href="#">Open in app</a>
+      <p class="muted small" style="margin:6px 0 0">Already have Automation X AA? Open it and the code is filled in for you.</p>
+    </div>
+    <p class="muted small ver" id="ver"></p>
+  </div>
+
+  <div class="card">
+    <h3>How it works</h3>
+    <ol class="steps muted">
+      <li>Tap <b>Download APK</b> and install the APK (allow "Install unknown apps" if Android asks).</li>
+      <li>Open Automation X AA and tap <b>Sign up</b>. The referral code is filled in automatically.</li>
+      <li>If it is not, type the code above into the <b>Referral code</b> field.</li>
+    </ol>
+  </div>
+  <footer>Questions? <a href="https://t.me/agent4x" target="_blank" rel="noopener">Contact @agent4x on Telegram</a></footer>
+</div>
+<script>
+(function () {
+  'use strict';
+  var RE = /^[A-Z0-9]{4,16}$/;
+  // Accepts ?c=CODE, #CODE and #c=CODE. Returns the upper-case code or null.
+  function parseCode(search, hash) {
+    var c = null;
+    try { c = new URLSearchParams(search || '').get('c'); } catch (_) {}
+    if (!c && hash) {
+      var h = String(hash).replace(/^#/, '');
+      try { h = decodeURIComponent(h); } catch (_) {}
+      var m = /^c=(.*)$/i.exec(h);
+      c = m ? m[1] : h;
+    }
+    if (!c) return null;
+    c = String(c).trim().toUpperCase();
+    return RE.test(c) ? c : null;
+  }
+  window.AAREF_parseCode = parseCode; // exposed for tests
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed'; ta.style.top = '-1000px'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select(); ta.setSelectionRange(0, text.length);
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (_) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+  // Writes text to the clipboard. Resolves true/false. Never throws.
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return fallbackCopy(text); });
+    }
+    return Promise.resolve(fallbackCopy(text));
+  }
+  window.AAREF_copyText = copyText;
+
+  var code = parseCode(location.search, location.hash);
+  var payload = code ? 'AAREF:' + code : '';
+  var $ = function (id) { return document.getElementById(id); };
+  var ok = $('ok');
+  function say(msg, red) { ok.textContent = msg; ok.classList.toggle('red', !!red); ok.classList.remove('hidden'); }
+
+  if (code) {
+    $('code').textContent = code;
+    document.title = 'Invite code ' + code + ' — Automation X AA';
+  } else {
+    $('code').classList.add('hidden');
+    $('bad').classList.remove('hidden');
+    $('sub').textContent = 'Download Automation X AA and create your account.';
+    $('copy').classList.add('hidden');
+  }
+
+  $('copy').onclick = function () {
+    if (!payload) return;
+    copyText(payload).then(function (done) {
+      say(done ? 'Code copied. Open the app and tap Sign up — it fills in automatically.' : 'Could not copy. Type the code ' + code + ' in the app when you sign up.', !done);
+    });
+  };
+
+  $('dl').onclick = function (e) {
+    if (!payload) return; // plain download
+    e.preventDefault();
+    var href = $('dl').getAttribute('href');
+    copyText(payload).then(function (done) {
+      say(done ? 'Download started. Your code is saved and will be filled in when you sign up.' : 'Download started. When you sign up, enter the code ' + code + '.', !done);
+      window.location.href = href;
+    });
+  };
+
+  // "Open in app": Android only. intent:// opens the app if installed (App Link host = this site), else stays here.
+  var isAndroid = /Android/i.test(navigator.userAgent || '');
+  if (code && isAndroid) {
+    var appLink = location.origin + '/r/?c=' + encodeURIComponent(code);
+    var intent = 'intent://' + location.host + '/r/?c=' + encodeURIComponent(code) +
+      '#Intent;scheme=https;package=com.automationxaa.app;S.browser_fallback_url=' + encodeURIComponent(location.href) + ';end';
+    var a = $('open');
+    a.href = intent;
+    a.setAttribute('data-applink', appLink);
+    a.onclick = function () { copyText(payload); };
+    $('openWrap').classList.remove('hidden');
+  }
+
+  fetch('../downloads/latest.json', { cache: 'no-store' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) {
+    $('ver').textContent = 'Latest version ' + (j.versionName || '') + (j.size ? ' · ' + (j.size / 1048576).toFixed(1) + ' MB' : '') + ' · Android 7.0+';
+  }).catch(function () {});
+})();
+</script>
+</body>
+</html>
