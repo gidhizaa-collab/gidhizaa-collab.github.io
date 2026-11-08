@@ -1,0 +1,11 @@
+{
+  "versionCode": 4,
+  "versionName": "1.0.3",
+  "apkUrl": "https://gidhizaa-collab.github.io/downloads/AutomationXAA-latest.apk",
+  "apkUrlVersioned": "https://gidhizaa-collab.github.io/downloads/AutomationXAA-1.0.3.apk",
+  "apk": "AutomationXAA-1.0.3.apk",
+  "size": 23701476,
+  "sha256": "636e444af3993eb9ca511b65566914ccf130b51545c99208f656e1f09dd926bf",
+  "changelog": "- VCF Maker: import contacts from any file (TXT, CSV, TSV, Excel XLSX/XLS, ODS, JSON, VCF, Word DOCX, PDF) with automatic number/name columns, preview, country code, duplicate and invalid number cleanup, and split into several VCF files\n- Invite links: share your referral link, friends get the code filled in automatically\n- Open invite links directly in the app\n- Small fixes and improvements",
+  "date": "2026-11-08"
+}
